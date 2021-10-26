@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "paleoworld:block/dead_cloudina_fan"
+  }
+}

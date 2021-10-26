@@ -1,0 +1,36 @@
+{
+  "itemGroup.paleoworld": "Paleoworld",
+
+  "item.paleoworld.amber": "Amber",
+  "item.paleoworld.amber_sword": "Amber Sword",
+  "item.paleoworld.amber_pickaxe": "Amber Pickaxe",
+  "item.paleoworld.amber_axe": "Amber Axe",
+  "item.paleoworld.amber_shovel": "Amber Shovel",
+  "item.paleoworld.amber_hoe": "Amber Hoe",
+  "item.paleoworld.cephalaspis_bucket": "Bucket of Cephalaspis",
+  "item.paleoworld.cephalaspis_tail": "Cephalaspis Tail",
+  "item.paleoworld.astraspis_bucket": "Bucket of Astraspis",
+  "item.paleoworld.haikouichthys_bucket": "Bucket of Haikouichthys",
+  "item.paleoworld.trilobite_bucket": "Bucket of Trilobite",
+
+  "item.paleoworld.dawn_horse_spawn_egg": "Dawn Horse Spawn Egg",
+  "item.paleoworld.cephalaspis_spawn_egg": "Cephalaspis Spawn Egg",
+  "item.paleoworld.glyptodon_spawn_egg": "Glyptodon Spawn Egg",
+  "item.paleoworld.astraspis_spawn_egg": "Astraspis Spawn Egg",
+  "item.paleoworld.haikouichthys_spawn_egg": "Haikouichthys Spawn Egg",
+  "item.paleoworld.trilobite_spawn_egg": "Trilobite Spawn Egg",
+  "item.paleoworld.rhamphorhynchus_spawn_egg": "Rhamphorhynchus Spawn Egg",
+
+  "block.paleoworld.amber_block": "Block of Amber",
+  "block.paleoworld.cloudina": "Cloudina",
+  "block.paleoworld.dead_cloudina": "Dead Cloudina",
+  "block.paleoworld.cloudina_fan": "Cloudina Fan",
+  "block.paleoworld.dead_cloudina_fan": "Dead Cloudina Fan",
+
+  "entity.paleoworld.dawn_horse": "Dawn Horse",
+  "entity.paleoworld.cephalaspis": "Cephalaspis",
+  "entity.paleoworld.glyptodon": "Glyptodon",
+  "entity.paleoworld.astraspis": "Astraspis",
+  "entity.paleoworld.haikouichthys": "Haikouichthys",
+  "entity.paleoworld.trilobite": "Trilobite"
+}
