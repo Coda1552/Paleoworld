@@ -32,5 +32,10 @@
   "entity.paleoworld.glyptodon": "Glyptodon",
   "entity.paleoworld.astraspis": "Astraspis",
   "entity.paleoworld.haikouichthys": "Haikouichthys",
-  "entity.paleoworld.trilobite": "Trilobite"
+  "entity.paleoworld.trilobite": "Trilobite",
+
+  "entity.paleoworld.trilobite.0": "Basic",
+  "entity.paleoworld.trilobite.1": "Boomeranng",
+  "entity.paleoworld.trilobite.2": "Spiky",
+  "entity.paleoworld.trilobite.3": "Long-tailed"
 }
