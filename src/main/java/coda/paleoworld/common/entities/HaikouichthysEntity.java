@@ -46,6 +46,11 @@ public class HaikouichthysEntity extends AbstractFishEntity {
         return 3;
     }
 
+    protected void saveToBucketTag(ItemStack bucket) {
+        super.saveToBucketTag(bucket);
+        CompoundNBT compoundnbt = bucket.getOrCreateTag();
+        compoundnbt.putInt("Variant", this.getVariant());
+    }
 
     @Override
     protected void defineSynchedData() {
