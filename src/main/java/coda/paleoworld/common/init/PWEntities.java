@@ -2,7 +2,7 @@ package coda.paleoworld.common.init;
 
 import coda.paleoworld.Paleoworld;
 import coda.paleoworld.common.entities.RhamphorhynchusEntity;
-import coda.paleoworld.common.TrilobiteEntity;
+import coda.paleoworld.common.entities.TrilobiteEntity;
 import coda.paleoworld.common.entities.*;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;

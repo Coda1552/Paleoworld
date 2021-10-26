@@ -1,6 +1,6 @@
 package coda.paleoworld.client.model;
 
-import coda.paleoworld.common.TrilobiteEntity;
+import coda.paleoworld.common.entities.TrilobiteEntity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.renderer.entity.model.EntityModel;

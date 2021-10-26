@@ -1,4 +1,4 @@
-package coda.paleoworld.common;
+package coda.paleoworld.common.entities;
 
 import coda.paleoworld.common.entities.HaikouichthysEntity;
 import coda.paleoworld.common.init.PWItems;
@@ -21,7 +21,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class TrilobiteEntity extends AbstractFishEntity {
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(HaikouichthysEntity.class, DataSerializers.INT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(TrilobiteEntity.class, DataSerializers.INT);
 
     public TrilobiteEntity(EntityType<? extends AbstractFishEntity> p_i48855_1_, World p_i48855_2_) {
         super(p_i48855_1_, p_i48855_2_);

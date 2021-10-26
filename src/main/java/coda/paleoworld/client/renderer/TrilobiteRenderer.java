@@ -2,7 +2,7 @@ package coda.paleoworld.client.renderer;
 
 import coda.paleoworld.Paleoworld;
 import coda.paleoworld.client.model.TrilobiteModel;
-import coda.paleoworld.common.TrilobiteEntity;
+import coda.paleoworld.common.entities.TrilobiteEntity;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.entity.MobRenderer;

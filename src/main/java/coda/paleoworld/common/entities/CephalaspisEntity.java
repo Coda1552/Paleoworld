@@ -20,7 +20,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class CephalaspisEntity extends AbstractFishEntity {
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(HaikouichthysEntity.class, DataSerializers.INT);
+    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(CephalaspisEntity.class, DataSerializers.INT);
 
     public CephalaspisEntity(EntityType<? extends AbstractFishEntity> p_i48855_1_, World p_i48855_2_) {
         super(p_i48855_1_, p_i48855_2_);
