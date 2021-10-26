@@ -26,7 +26,7 @@ public class HaikouichthysRenderer extends MobRenderer<HaikouichthysEntity, Haik
    });
 
    public HaikouichthysRenderer(EntityRendererManager renderManagerIn) {
-      super(renderManagerIn, new HaikouichthysModel<>(), 0.3F);
+      super(renderManagerIn, new HaikouichthysModel<>(), 0.175F);
    }
 
    public ResourceLocation getTextureLocation(HaikouichthysEntity entity) {
