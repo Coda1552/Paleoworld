@@ -16,10 +16,10 @@ import java.util.Map;
 @OnlyIn(Dist.CLIENT)
 public class TrilobiteRenderer extends MobRenderer<TrilobiteEntity, TrilobiteModel<TrilobiteEntity>> {
    public static final Map<Integer, ResourceLocation> TEXTURES = Util.make(Maps.newHashMap(), (hashMap) -> {
-      hashMap.put(0, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/green_Trilobite.png"));
-      hashMap.put(1, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/normal_Trilobite.png"));
-      hashMap.put(2, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/yellow_Trilobite.png"));
-      hashMap.put(3, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/classic_Trilobite.png"));
+      hashMap.put(0, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/basic_trilobite.png"));
+      hashMap.put(1, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/boomerang_trilobite.png"));
+      hashMap.put(2, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/spiky_trilobite.png"));
+      hashMap.put(3, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/long_tailed_trilobite.png"));
    });
 
    public TrilobiteRenderer(EntityRendererManager renderManagerIn) {

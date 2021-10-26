@@ -1,6 +1,32 @@
 {
-  "parent": "minecraft:item/handheld",
+  "parent": "item/generated",
   "textures": {
-    "layer0": "paleoworld:item/trilobite_bucket"
-  }
+    "layer0": "paleoworld:item/trilobite_bucket_1"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "paleoworld:variant": 0
+      },
+      "model": "paleoworld:item/trilobite_bucket"
+    },
+    {
+      "predicate": {
+        "paleoworld:variant": 1
+      },
+      "model": "paleoworld:item/trilobite_bucket_2"
+    },
+    {
+      "predicate": {
+        "paleoworld:variant": 2
+      },
+      "model": "paleoworld:item/trilobite_bucket_3"
+    },
+    {
+      "predicate": {
+        "paleoworld:variant": 3
+      },
+      "model": "paleoworld:item/trilobite_bucket_4"
+    }
+  ]
 }

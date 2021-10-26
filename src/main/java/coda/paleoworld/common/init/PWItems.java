@@ -1,6 +1,7 @@
 package coda.paleoworld.common.init;
 
 import coda.paleoworld.Paleoworld;
+import coda.paleoworld.common.items.PWBucketItem;
 import coda.paleoworld.common.items.PWItemTier;
 import coda.paleoworld.common.items.PWSpawnEggItem;
 import net.minecraft.block.Blocks;
@@ -25,7 +26,7 @@ public class PWItems {
     public static final RegistryObject<Item> CEPHALASPIS_BUCKET = ITEMS.register("cephalaspis_bucket", () -> new FishBucketItem(PWEntities.CEPHALASPIS, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
     public static final RegistryObject<Item> ASTRRASPIS_BUCKET = ITEMS.register("astraspis_bucket", () -> new FishBucketItem(PWEntities.ASTRASPIS, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
     public static final RegistryObject<Item> HAIKOUICHTHYS_BUCKET = ITEMS.register("haikouichthys_bucket", () -> new FishBucketItem(PWEntities.HAIKOUICHTHYS, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
-    public static final RegistryObject<Item> TRILOBITE_BUCKET = ITEMS.register("trilobite_bucket", () -> new FishBucketItem(PWEntities.TRILOBITE, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
+    public static final RegistryObject<Item> TRILOBITE_BUCKET = ITEMS.register("trilobite_bucket", () -> new PWBucketItem(PWEntities.TRILOBITE, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
 
     // Food
     public static final RegistryObject<Item> CEPHALASPIS_TAIL = ITEMS.register("cephalaspis_tail", () -> new Item(new Item.Properties().tab(Paleoworld.GROUP).food(new Food.Builder().saturationMod(0.25F).nutrition(4).build())));
