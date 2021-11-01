@@ -84,8 +84,11 @@ public class CephalaspisEntity extends AbstractFishEntity {
         if (dataTag != null && dataTag.contains("Variant", 3)) {
             this.setVariant(dataTag.getInt("Variant"));
         }
+        else if (random.nextFloat() > 0.99F) {
+            setVariant(1);
+        }
         else {
-            setVariant(random.nextInt(2));
+            setVariant(0);
         }
         return spawnDataIn;
     }

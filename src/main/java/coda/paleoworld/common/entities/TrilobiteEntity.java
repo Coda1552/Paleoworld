@@ -2,6 +2,7 @@ package coda.paleoworld.common.entities;
 
 import coda.paleoworld.common.entities.HaikouichthysEntity;
 import coda.paleoworld.common.init.PWItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.ILivingEntityData;
 import net.minecraft.entity.SpawnReason;
@@ -13,12 +14,15 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class TrilobiteEntity extends AbstractFishEntity {
     private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(TrilobiteEntity.class, DataSerializers.INT);
@@ -89,5 +93,9 @@ public class TrilobiteEntity extends AbstractFishEntity {
             setVariant(random.nextInt(4));
         }
         return spawnDataIn;
+    }
+
+    public static boolean checkPrehistoricFishSpawnRules(EntityType<? extends AbstractFishEntity> p_223363_0_, IWorld p_223363_1_, SpawnReason p_223363_2_, BlockPos p_223363_3_, Random p_223363_4_) {
+        return p_223363_1_.getBlockState(p_223363_3_.below()).is(Blocks.WATER);
     }
 }

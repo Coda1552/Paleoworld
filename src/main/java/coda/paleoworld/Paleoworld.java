@@ -1,19 +1,15 @@
 package coda.paleoworld;
 
-import coda.paleoworld.common.entities.RhamphorhynchusEntity;
-import coda.paleoworld.common.entities.AstraspisEntity;
-import coda.paleoworld.common.entities.DawnHorseEntity;
-import coda.paleoworld.common.entities.GlyptodonEntity;
+import coda.paleoworld.common.entities.*;
 import coda.paleoworld.common.init.PWBlocks;
 import coda.paleoworld.common.init.PWEntities;
 import coda.paleoworld.common.init.PWItems;
+import coda.paleoworld.common.init.PWSounds;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.fish.AbstractFishEntity;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,8 +31,10 @@ public class Paleoworld {
 
         bus.addListener(this::registerEntityAttributes);
         bus.addListener(this::registerCommon);
+        bus.addListener(this::registerClient);
 
         PWItems.ITEMS.register(bus);
+        PWSounds.SOUNDS.register(bus);
         PWBlocks.BLOCKS.register(bus);
         PWEntities.ENTITIES.register(bus);
     }
@@ -44,9 +42,10 @@ public class Paleoworld {
     private void registerCommon(FMLCommonSetupEvent event) {
         EntitySpawnPlacementRegistry.register(PWEntities.GLYPTODON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::checkAnimalSpawnRules);
         EntitySpawnPlacementRegistry.register(PWEntities.DAWN_HORSE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.HAIKOUICHTHYS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, AbstractFishEntity::checkFishSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.ASTRASPIS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, AbstractFishEntity::checkFishSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.CEPHALASPIS.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING, AbstractFishEntity::checkFishSpawnRules);
+        EntitySpawnPlacementRegistry.register(PWEntities.HAIKOUICHTHYS.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
+        EntitySpawnPlacementRegistry.register(PWEntities.ASTRASPIS.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
+        EntitySpawnPlacementRegistry.register(PWEntities.CEPHALASPIS.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
+        EntitySpawnPlacementRegistry.register(PWEntities.TRILOBITE.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {

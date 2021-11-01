@@ -1,0 +1,29 @@
+{
+  "glyptodon.ambient": {
+    "subtitle": "paleoworld.glyptodon.ambient",
+    "sounds": [
+      {
+        "name": "paleoworld:glyptodon/ambient",
+        "stream": true
+      }
+    ]
+  },
+  "glyptodon.hurt": {
+    "subtitle": "paleoworld.glyptodon.hurt",
+    "sounds": [
+      {
+        "name": "paleoworld:glyptodon/hurt",
+        "stream": true
+      }
+    ]
+  },
+  "glyptodon.death": {
+    "subtitle": "paleoworld.glyptodon.death",
+    "sounds": [
+      {
+        "name": "paleoworld:glyptodon/death",
+        "stream": true
+      }
+    ]
+  }
+}

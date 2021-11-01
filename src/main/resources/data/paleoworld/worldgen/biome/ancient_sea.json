@@ -43,6 +43,12 @@
         "weight": 1,
         "minCount": 2,
         "maxCount": 5
+      },
+      {
+        "type": "paleoworld:trilobite",
+        "weight": 1,
+        "minCount": 2,
+        "maxCount": 5
       }
     ],
     "ambient": [],
