@@ -2,6 +2,7 @@ package coda.paleoworld.common.entities;
 
 import coda.paleoworld.common.init.PWEntities;
 import coda.paleoworld.common.init.PWItems;
+import coda.paleoworld.common.init.PWSounds;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
@@ -56,24 +57,19 @@ public class GlyptodonEntity extends AnimalEntity {
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.LLAMA_HURT;
+        return PWSounds.GLYPTODON_HURT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.LLAMA_DEATH;
+        return PWSounds.GLYPTODON_DEATH.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.LLAMA_AMBIENT;
-    }
-
-    @Override
-    protected float getVoicePitch() {
-        return 0.75F;
+        return PWSounds.GLYPTODON_AMBIENT.get();
     }
 
     @Nullable
