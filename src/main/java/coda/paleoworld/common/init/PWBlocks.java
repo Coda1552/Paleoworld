@@ -27,10 +27,10 @@ public class PWBlocks {
     public static final RegistryObject<Block> CLOUDINA = register("cloudina", () -> new CoralPlantBlock(PWBlocks.CLOUDINA_DEAD, AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN).sound(SoundType.WET_GRASS).requiresCorrectToolForDrops().noCollission()), new Item.Properties().tab(Paleoworld.GROUP));
     public static final RegistryObject<Block> DEAD_CLOUDINA = register("dead_cloudina", () -> CLOUDINA_DEAD, new Item.Properties().tab(Paleoworld.GROUP));
 
-    public static final RegistryObject<Block> CLOUDINA_FAN = register("cloudina_fan", () -> new CoralFinBlock(PWBlocks.CLOUDINA_FAN_DEAD, AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN).sound(SoundType.WET_GRASS).requiresCorrectToolForDrops().noCollission()), null);
+    public static final RegistryObject<Block> CLOUDINA_FAN = register("cloudina_fan", () -> new CoralFinBlock(PWBlocks.CLOUDINA_FAN_DEAD, AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN).requiresCorrectToolForDrops().noCollission()), null);
     public static final RegistryObject<Block> DEAD_CLOUDINA_FAN = register("dead_cloudina_fan", () -> CLOUDINA_FAN_DEAD, null);
 
-    public static final RegistryObject<Block> CLOUDINA_WALL_FAN = register("cloudina_wall_fan", () -> new CoralWallFanBlock(PWBlocks.CLOUDINA_WALL_FAN_DEAD, AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN).noCollission().instabreak().sound(SoundType.WET_GRASS).dropsLike(PWBlocks.CLOUDINA_FAN.get())), null);
+    public static final RegistryObject<Block> CLOUDINA_WALL_FAN = register("cloudina_wall_fan", () -> new CoralWallFanBlock(PWBlocks.CLOUDINA_WALL_FAN_DEAD, AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN).noCollission().instabreak().dropsLike(PWBlocks.CLOUDINA_FAN.get())), null);
     public static final RegistryObject<Block> DEAD_CLOUDINA_WALL_FAN = register("dead_cloudina_wall_fan", () -> CLOUDINA_WALL_FAN_DEAD, null);
 
 
