@@ -1,6 +1,7 @@
 package coda.paleoworld.common.init;
 
 import coda.paleoworld.Paleoworld;
+import coda.paleoworld.common.entities.GlyptodonEntity;
 import coda.paleoworld.common.items.PWBucketItem;
 import coda.paleoworld.common.items.PWItemTier;
 import coda.paleoworld.common.items.PWSpawnEggItem;
@@ -13,6 +14,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class PWItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Paleoworld.MOD_ID);
+
+    public static final Item DINOBEAN_ON_A_STICK_PROPERTIES = new OnAStickItem<GlyptodonEntity>( new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1).durability(30), PWEntities.GLYPTODON.get(), 5);
+
 
     // Materials
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().tab(Paleoworld.GROUP)));
@@ -27,9 +31,10 @@ public class PWItems {
     public static final RegistryObject<Item> ASTRRASPIS_BUCKET = ITEMS.register("astraspis_bucket", () -> new FishBucketItem(PWEntities.ASTRASPIS, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
     public static final RegistryObject<Item> HAIKOUICHTHYS_BUCKET = ITEMS.register("haikouichthys_bucket", () -> new FishBucketItem(PWEntities.HAIKOUICHTHYS, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
     public static final RegistryObject<Item> TRILOBITE_BUCKET = ITEMS.register("trilobite_bucket", () -> new PWBucketItem(PWEntities.TRILOBITE, () -> Fluids.WATER, new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1)));
-
+    public static final RegistryObject<Item> DINOBEAN_ON_A_STICK = ITEMS.register("dinobean_on_a_stick", () -> DINOBEAN_ON_A_STICK_PROPERTIES);
     // Food
     public static final RegistryObject<Item> CEPHALASPIS_TAIL = ITEMS.register("cephalaspis_tail", () -> new Item(new Item.Properties().tab(Paleoworld.GROUP).food(new Food.Builder().saturationMod(0.25F).nutrition(4).build())));
+    public static final RegistryObject<Item> DINOBEAN = ITEMS.register("dinobean", () -> new Item(new Item.Properties().tab(Paleoworld.GROUP).food(new Food.Builder().saturationMod(0.3F).nutrition(2).build())));
 
     // Spawn Eggs
     public static final RegistryObject<Item> DAWN_HORSE_SPAWN_EGG = ITEMS.register("dawn_horse_spawn_egg", () -> new PWSpawnEggItem(PWEntities.DAWN_HORSE, 0xdbae6b, 0xebe0c4, new Item.Properties().tab(Paleoworld.GROUP)));
