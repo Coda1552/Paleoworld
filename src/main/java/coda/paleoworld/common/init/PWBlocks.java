@@ -22,6 +22,7 @@ public class PWBlocks {
     public static final Block CLOUDINA_WALL_FAN_DEAD =  new DeadCoralWallFanBlock(AbstractBlock.Properties.of(Material.STONE, MaterialColor.COLOR_GRAY).noCollission().instabreak().sound(SoundType.WET_GRASS).dropsLike(PWBlocks.CLOUDINA_FAN_DEAD));
 
     public static final RegistryObject<Block> AMBER_BLOCK = register("amber_block", () -> new Block(AbstractBlock.Properties.of(Material.GLASS, MaterialColor.COLOR_ORANGE).harvestTool(ToolType.PICKAXE).sound(SoundType.GLASS).strength(2.5F, 3.0F).requiresCorrectToolForDrops().noCollission()), new Item.Properties().tab(Paleoworld.GROUP));
+    public static final RegistryObject<Block> COOKSONIA = register("cooksonia", () -> new BushBlock(AbstractBlock.Properties.of(Material.PLANT, MaterialColor.COLOR_YELLOW).sound(SoundType.GRASS).instabreak().noCollission()), new Item.Properties().tab(Paleoworld.GROUP));
 
     public static final RegistryObject<Block> CLOUDINA = register("cloudina", () -> new CoralPlantBlock(PWBlocks.CLOUDINA_DEAD, AbstractBlock.Properties.of(Material.CORAL, MaterialColor.COLOR_GREEN).sound(SoundType.WET_GRASS).requiresCorrectToolForDrops().noCollission()), new Item.Properties().tab(Paleoworld.GROUP));
     public static final RegistryObject<Block> DEAD_CLOUDINA = register("dead_cloudina", () -> CLOUDINA_DEAD, new Item.Properties().tab(Paleoworld.GROUP));
