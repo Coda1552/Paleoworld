@@ -17,7 +17,6 @@ public class PWItems {
 
     public static final Item DINOBEAN_ON_A_STICK_PROPERTIES = new OnAStickItem<GlyptodonEntity>( new Item.Properties().tab(Paleoworld.GROUP).stacksTo(1).durability(30), PWEntities.GLYPTODON.get(), 5);
 
-
     // Materials
     public static final RegistryObject<Item> AMBER = ITEMS.register("amber", () -> new Item(new Item.Properties().tab(Paleoworld.GROUP)));
 
