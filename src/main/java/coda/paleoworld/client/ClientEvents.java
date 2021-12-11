@@ -46,6 +46,7 @@ public class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(PWBlocks.DEAD_CLOUDINA_FAN.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(PWBlocks.CLOUDINA_WALL_FAN.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(PWBlocks.DEAD_CLOUDINA_WALL_FAN.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.COOKSONIA.get(), RenderType.cutout());
 
         var managerDefault = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().get("default");
         var managerSlim = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().get("slim");

@@ -11,7 +11,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class AnomalocarisRenderer extends MobRenderer<AnomalocarisEntity, AnomalocarisModel<AnomalocarisEntity>> {
-   private static final ResourceLocation TEXTURE = new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/anomalocaris.png");
+   private static final ResourceLocation TEXTURE = new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/anomalocaris.png");
 
    public AnomalocarisRenderer(EntityRendererProvider.Context manager) {
       super(manager, new AnomalocarisModel<>(manager.bakeLayer(AnomalocarisModel.LAYER)), 0.3F);

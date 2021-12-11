@@ -1,13 +1,7 @@
 package coda.paleoworld;
 
-import coda.paleoworld.common.entities.DawnHorseEntity;
-import coda.paleoworld.common.entities.GlyptodonEntity;
-import coda.paleoworld.common.entities.RhamphorhynchusEntity;
-import coda.paleoworld.common.entities.TrilobiteEntity;
-import coda.paleoworld.common.init.PWBlocks;
-import coda.paleoworld.common.init.PWEntities;
-import coda.paleoworld.common.init.PWItems;
-import coda.paleoworld.common.init.PWSounds;
+import coda.paleoworld.common.entities.*;
+import coda.paleoworld.common.init.*;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Animal;
@@ -49,6 +43,8 @@ public class Paleoworld {
         SpawnPlacements.register(PWEntities.ASTRASPIS.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
         SpawnPlacements.register(PWEntities.CEPHALASPIS.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
         SpawnPlacements.register(PWEntities.TRILOBITE.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
+
+        PWNoiseGeneratorSettings.init();
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
@@ -59,6 +55,7 @@ public class Paleoworld {
         event.put(PWEntities.HAIKOUICHTHYS.get(), AbstractFish.createAttributes().build());
         event.put(PWEntities.RHAMPHORHYNCHUS.get(), RhamphorhynchusEntity.createAttributes().build());
         event.put(PWEntities.TRILOBITE.get(), AbstractFish.createAttributes().build());
+        event.put(PWEntities.ANOMALOCARIS.get(), AnomalocarisEntity.createAttributes().build());
     }
 
     private void registerClient(FMLClientSetupEvent event) {
