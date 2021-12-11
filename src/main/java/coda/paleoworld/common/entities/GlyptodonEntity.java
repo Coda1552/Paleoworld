@@ -3,51 +3,54 @@ package coda.paleoworld.common.entities;
 import coda.paleoworld.common.init.PWEntities;
 import coda.paleoworld.common.init.PWItems;
 import coda.paleoworld.common.init.PWSounds;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.Inventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
 
-public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideable {
+public class GlyptodonEntity extends Animal implements Saddleable, ItemSteerable {
     private static final Ingredient TEMPTATION_ITEMS = Ingredient.of(Items.CARROT);
-    private static final DataParameter<Integer> BOOST_TIME = EntityDataManager.defineId(GlyptodonEntity.class, DataSerializers.INT);
-    private static final DataParameter<Boolean> SADDLED = EntityDataManager.defineId(GlyptodonEntity.class, DataSerializers.BOOLEAN);
-    private final BoostHelper steering = new BoostHelper(this.entityData, BOOST_TIME, SADDLED);
+    private static final EntityDataAccessor<Integer> BOOST_TIME = SynchedEntityData.defineId(GlyptodonEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> SADDLED = SynchedEntityData.defineId(GlyptodonEntity.class, EntityDataSerializers.BOOLEAN);
+    private final ItemBasedSteering steering = new ItemBasedSteering(this.entityData, BOOST_TIME, SADDLED);
 
-    public GlyptodonEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
+    public GlyptodonEntity(EntityType<? extends Animal> type, Level worldIn) {
         super(type, worldIn);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.15D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.25D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, false, TEMPTATION_ITEMS));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.5D, false, Ingredient.of(PWItems.DINOBEAN_ON_A_STICK.get())));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, TEMPTATION_ITEMS, false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.5D, Ingredient.of(PWItems.DINOBEAN_ON_A_STICK.get()), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.15D));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
+        this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
     }
 
     @Nullable
@@ -57,15 +60,15 @@ public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideab
 
     public boolean canBeControlledByRider() {
         Entity entity = this.getControllingPassenger();
-        if (!(entity instanceof PlayerEntity)) {
+        if (!(entity instanceof Player)) {
             return false;
         } else {
-            PlayerEntity playerentity = (PlayerEntity)entity;
-            return playerentity.getMainHandItem().getItem() == PWItems.DINOBEAN_ON_A_STICK.get() || playerentity.getOffhandItem().getItem() == PWItems.DINOBEAN_ON_A_STICK.get();
+            Player player = (Player)entity;
+            return player.getMainHandItem().getItem() == PWItems.DINOBEAN_ON_A_STICK.get() || player.getOffhandItem().getItem() == PWItems.DINOBEAN_ON_A_STICK.get();
         }
     }
 
-    public void onSyncedDataUpdated(DataParameter<?> p_184206_1_) {
+    public void onSyncedDataUpdated(EntityDataAccessor<?> p_184206_1_) {
         if (BOOST_TIME.equals(p_184206_1_) && this.level.isClientSide) {
             this.steering.onSynced();
         }
@@ -79,19 +82,19 @@ public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideab
         this.entityData.define(BOOST_TIME, 0);
     }
 
-    public void addAdditionalSaveData(CompoundNBT p_213281_1_) {
+    public void addAdditionalSaveData(CompoundTag p_213281_1_) {
         super.addAdditionalSaveData(p_213281_1_);
         this.steering.addAdditionalSaveData(p_213281_1_);
     }
 
-    public void readAdditionalSaveData(CompoundNBT p_70037_1_) {
+    public void readAdditionalSaveData(CompoundTag p_70037_1_) {
         super.readAdditionalSaveData(p_70037_1_);
         this.steering.readAdditionalSaveData(p_70037_1_);
     }
 
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 40.0D).add(Attributes.MOVEMENT_SPEED, 0.2F);
     }
 
     @Override
@@ -100,19 +103,19 @@ public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideab
     }
 
 
-    public ActionResultType mobInteract(PlayerEntity p_230254_1_, Hand p_230254_2_) {
-        boolean flag = this.isFood(p_230254_1_.getItemInHand(p_230254_2_));
-        if (!flag && this.isSaddled() && !this.isVehicle() && !p_230254_1_.isSecondaryUseActive()) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        boolean flag = this.isFood(player.getItemInHand(hand));
+        if (!flag && this.isSaddled() && !this.isVehicle() && !player.isSecondaryUseActive()) {
             if (!this.level.isClientSide) {
-                p_230254_1_.startRiding(this);
+                player.startRiding(this);
             }
 
-            return ActionResultType.sidedSuccess(this.level.isClientSide);
+            return InteractionResult.sidedSuccess(this.level.isClientSide);
         } else {
-            ActionResultType actionresulttype = super.mobInteract(p_230254_1_, p_230254_2_);
+            InteractionResult actionresulttype = super.mobInteract(player, hand);
             if (!actionresulttype.consumesAction()) {
-                ItemStack itemstack = p_230254_1_.getItemInHand(p_230254_2_);
-                return itemstack.getItem() == Items.SADDLE ? itemstack.interactLivingEntity(p_230254_1_, this, p_230254_2_) : ActionResultType.PASS;
+                ItemStack itemstack = player.getItemInHand(hand);
+                return itemstack.getItem() == Items.SADDLE ? itemstack.interactLivingEntity(player, this, hand) : InteractionResult.PASS;
             } else {
                 return actionresulttype;
             }
@@ -143,18 +146,18 @@ public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideab
 
     @Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return PWEntities.GLYPTODON.get().create(p_241840_1_);
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(PWItems.GLYPTODON_SPAWN_EGG.get());
     }
 
     @Override
-    protected float getStandingEyeHeight(Pose p_213348_1_, EntitySize p_213348_2_) {
-        return 0.35F;
+    protected float getStandingEyeHeight(Pose p_213348_1_, EntityDimensions p_213348_2_) {
+        return isBaby() ? 0.15F : 0.35F;
     }
 
     @Override
@@ -163,14 +166,14 @@ public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideab
     }
 
     @Override
-    public void equipSaddle(@Nullable SoundCategory p_230266_1_) {
+    public void equipSaddle(@Nullable SoundSource p_230266_1_) {
         this.steering.setSaddle(true);
         if (p_230266_1_ != null) {
             this.level.playSound(null, this, SoundEvents.PIG_SADDLE, p_230266_1_, 0.5F, 1.0F);
         }
     }
 
-    public void travel(Vector3d p_213352_1_) {
+    public void travel(Vec3 p_213352_1_) {
         this.travel(this, this.steering, p_213352_1_);
     }
 
@@ -178,7 +181,7 @@ public class GlyptodonEntity extends AnimalEntity implements IEquipable, IRideab
         return (float)this.getAttributeValue(Attributes.MOVEMENT_SPEED) * 0.225F;
     }
 
-    public void travelWithInput(Vector3d p_230267_1_) {
+    public void travelWithInput(Vec3 p_230267_1_) {
         super.travel(p_230267_1_);
     }
 

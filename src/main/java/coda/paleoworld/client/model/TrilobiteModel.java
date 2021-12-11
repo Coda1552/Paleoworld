@@ -1,62 +1,49 @@
 package coda.paleoworld.client.model;
 
-import coda.paleoworld.common.entities.TrilobiteEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+import coda.paleoworld.Paleoworld;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 
-public class TrilobiteModel<T extends TrilobiteEntity> extends EntityModel<T> {
-	private final ModelRenderer creature;
-	private final ModelRenderer head;
-	private final ModelRenderer tail;
-	private final ModelRenderer cube_r1;
-	private final ModelRenderer cube_r2;
+public class TrilobiteModel<T extends Entity> extends EntityModel<T> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(new ResourceLocation(Paleoworld.MOD_ID, "trilobite"), "main");
+	private final ModelPart creature;
 
-	public TrilobiteModel() {
-		texWidth = 64;
-		texHeight = 64;
+	public TrilobiteModel(ModelPart root) {
+		this.creature = root.getChild("creature");
+	}
 
-		creature = new ModelRenderer(this);
-		creature.setPos(0.0F, 23.0F, 0.0F);
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		head = new ModelRenderer(this);
-		head.setPos(0.5F, 0.25F, -0.75F);
-		creature.addChild(head);
-		head.texOffs(0, 0).addBox(-5.5F, 0.75F, -4.25F, 11.0F, 0.0F, 5.0F, 0.0F, false);
-		head.texOffs(0, 12).addBox(-3.5F, -2.25F, -4.25F, 7.0F, 3.0F, 4.0F, 0.0F, false);
+		PartDefinition creature = partdefinition.addOrReplaceChild("creature", CubeListBuilder.create(), PartPose.offset(0.0F, 23.0F, 0.0F));
 
-		tail = new ModelRenderer(this);
-		tail.setPos(0.5F, 0.6085F, -0.3346F);
-		creature.addChild(tail);
-		tail.texOffs(19, 16).addBox(-2.5F, -1.6085F, -0.6654F, 5.0F, 2.0F, 4.0F, 0.0F, false);
+		PartDefinition head = creature.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-5.5F, 0.75F, -4.25F, 11.0F, 0.0F, 5.0F, new CubeDeformation(0.0F))
+				.texOffs(0, 12).addBox(-3.5F, -2.25F, -4.25F, 7.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 0.25F, -0.75F));
 
-		cube_r1 = new ModelRenderer(this);
-		cube_r1.setPos(-0.5F, 0.3915F, 0.3346F);
-		tail.addChild(cube_r1);
-		setRotationAngle(cube_r1, 0.0436F, 0.0F, 0.0F);
-		cube_r1.texOffs(19, 12).addBox(-4.0F, 0.0F, 0.0F, 9.0F, 0.0F, 3.0F, 0.0F, false);
+		PartDefinition tail = creature.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(19, 16).addBox(-2.5F, -1.6085F, -0.6654F, 5.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.5F, 0.6085F, -0.3346F));
 
-		cube_r2 = new ModelRenderer(this);
-		cube_r2.setPos(-0.5F, 0.3915F, 3.3346F);
-		tail.addChild(cube_r2);
-		setRotationAngle(cube_r2, 0.0436F, 0.0F, 0.0F);
-		cube_r2.texOffs(0, 6).addBox(-3.0F, 0.0F, 0.0F, 7.0F, 0.0F, 5.0F, 0.0F, false);
+		PartDefinition cube_r1 = tail.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(19, 12).addBox(-4.0F, 0.0F, 0.0F, 9.0F, 0.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.3915F, 0.3346F, 0.0436F, 0.0F, 0.0F));
+
+		PartDefinition cube_r2 = tail.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 6).addBox(-3.0F, 0.0F, 0.0F, 7.0F, 0.0F, 5.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-0.5F, 0.3915F, 3.3346F, 0.0436F, 0.0F, 0.0F));
+
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override
-	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-		//previously the render function, render code was moved to a method below
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		creature.render(matrixStack, buffer, packedLight, packedOverlay);
-	}
-
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		creature.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 }

@@ -1,110 +1,79 @@
 package coda.paleoworld.client.model;
 
-import com.google.common.collect.ImmutableList;
-import net.minecraft.client.renderer.entity.model.AgeableModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.math.MathHelper;
+import coda.paleoworld.Paleoworld;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 
-import java.util.Collections;
+public class GlyptodonModel<T extends Entity> extends EntityModel<T> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(new ResourceLocation(Paleoworld.MOD_ID, "glyptodon"), "main");
+	private final ModelPart creature;
+	private final ModelPart head;
+	private final ModelPart left_leg_1;
+	private final ModelPart left_leg_2;
+	private final ModelPart right_leg_1;
+	private final ModelPart right_leg_2;
+	private final ModelPart tail;
 
-public class GlyptodonModel<T extends LivingEntity> extends AgeableModel<T> {
-	private final ModelRenderer glyptodon;
-	private final ModelRenderer body;
-	private final ModelRenderer tail;
-	private final ModelRenderer left_leg_2;
-	private final ModelRenderer left_leg_1;
-	private final ModelRenderer right_leg_2;
-	private final ModelRenderer right_leg_1;
-	private final ModelRenderer head;
-	private final ModelRenderer cube_r1;
-	private final ModelRenderer cube_r2;
-	private final ModelRenderer cube_r3;
+	public GlyptodonModel(ModelPart root) {
+		this.creature = root.getChild("creature");
+		this.head = this.creature.getChild("head");
+		this.left_leg_1 = this.creature.getChild("left_leg_1");
+		this.left_leg_2 = this.creature.getChild("left_leg_2");
+		this.right_leg_1 = this.creature.getChild("right_leg_1");
+		this.right_leg_2 = this.creature.getChild("right_leg_2");
+		this.tail = this.creature.getChild("tail");
+	}
 
-	public GlyptodonModel() {
-			texWidth = 128;
-			texHeight = 128;
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-			glyptodon = new ModelRenderer(this);
-			glyptodon.setPos(0.0F, 15.0F, 0.0F);
+		PartDefinition creature = partdefinition.addOrReplaceChild("creature", CubeListBuilder.create(), PartPose.offset(0.0F, 17.0F, 0.0F));
 
-			body = new ModelRenderer(this);
-			body.setPos(0.0F, -2.0F, 0.0F);
-			glyptodon.addChild(body);
-			body.texOffs(0, 0).addBox(-10.0F, -10.0F, -11.0F, 21.0F, 18.0F, 21.0F, 0.0F, false);
+		PartDefinition left_leg_1 = creature.addOrReplaceChild("left_leg_1", CubeListBuilder.create().texOffs(25, 53).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 4.0F, -5.0F));
 
-			tail = new ModelRenderer(this);
-			tail.setPos(0.5F, 3.3207F, 9.7337F);
-			body.addChild(tail);
+		PartDefinition left_leg_2 = creature.addOrReplaceChild("left_leg_2", CubeListBuilder.create().texOffs(0, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(8.0F, 4.0F, 6.0F));
 
-			cube_r1 = new ModelRenderer(this);
-			cube_r1.setPos(-0.5F, -0.3207F, 0.2663F);
-			tail.addChild(cube_r1);
-			setRotationAngle(cube_r1, -0.2618F, 0.0F, 0.0F);
-			cube_r1.texOffs(29, 40).addBox(-2.0F, 0.0F, 0.0F, 5.0F, 5.0F, 7.0F, 0.0F, false);
+		PartDefinition right_leg_1 = creature.addOrReplaceChild("right_leg_1", CubeListBuilder.create().texOffs(50, 49).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, 4.0F, -5.0F));
 
-			left_leg_1 = new ModelRenderer(this);
-			left_leg_1.setPos(8.0F, 6.0F, -6.0F);
-			glyptodon.addChild(left_leg_1);
-			left_leg_1.texOffs(25, 53).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
+		PartDefinition right_leg_2 = creature.addOrReplaceChild("right_leg_2", CubeListBuilder.create().texOffs(0, 8).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-6.0F, 4.0F, 6.0F));
 
-			left_leg_2 = new ModelRenderer(this);
-			left_leg_2.setPos(8.0F, 6.0F, 7.0F);
-			glyptodon.addChild(left_leg_2);
-			left_leg_2.texOffs(0, 0).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
+		PartDefinition body = creature.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-10.0F, -10.0F, -10.0F, 21.0F, 18.0F, 21.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -4.0F, 0.0F));
 
-			right_leg_1 = new ModelRenderer(this);
-			right_leg_1.setPos(-7.0F, 6.0F, -6.0F);
-			glyptodon.addChild(right_leg_1);
-			right_leg_1.texOffs(50, 49).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
+		PartDefinition head = creature.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 40).addBox(-3.0F, -4.0F, -7.0F, 7.0F, 6.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 2.0F, -10.0F));
 
-			right_leg_2 = new ModelRenderer(this);
-			right_leg_2.setPos(-7.0F, 6.0F, 7.0F);
-			glyptodon.addChild(right_leg_2);
-			right_leg_2.texOffs(0, 8).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
+		PartDefinition cube_r1 = head.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(7, 16).addBox(-1.0F, -2.0F, -1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-2.0F, -4.0F, -2.0F, 0.0F, 0.0F, -0.829F));
 
-			head = new ModelRenderer(this);
-			head.setPos(0.5F, 3.0204F, -11.5F);
-			glyptodon.addChild(head);
-			head.texOffs(0, 40).addBox(-3.5F, -3.0204F, -6.5F, 7.0F, 6.0F, 7.0F, 0.0F, false);
+		PartDefinition cube_r2 = head.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(0, 16).addBox(0.0F, -2.0F, -1.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(3.0F, -4.0F, -2.0F, 0.0F, 0.0F, 0.829F));
 
-			cube_r2 = new ModelRenderer(this);
-			cube_r2.setPos(2.5F, -3.0204F, -1.5F);
-			head.addChild(cube_r2);
-			setRotationAngle(cube_r2, 0.0F, 0.0F, 1.1345F);
-			cube_r2.texOffs(7, 16).addBox(0.0F, -2.0F, -1.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
+		PartDefinition tail = creature.addOrReplaceChild("tail", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 10.0F));
 
-			cube_r3 = new ModelRenderer(this);
-			cube_r3.setPos(-2.5F, -3.0204F, -1.5F);
-			head.addChild(cube_r3);
-			setRotationAngle(cube_r3, 0.0F, 0.0F, -1.1345F);
-			cube_r3.texOffs(0, 16).addBox(-1.0F, -2.0F, -1.0F, 1.0F, 2.0F, 2.0F, 0.0F, false);
-		}
+		PartDefinition cube_r3 = tail.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(29, 40).addBox(-2.0F, 0.0F, 0.0F, 5.0F, 5.0F, 7.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -1.0F, 1.0F, -0.2618F, 0.0F, 0.0F));
 
-		@Override
-		public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-			this.head.xRot = headPitch * ((float)Math.PI / 180F);
-			this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
-			this.left_leg_1.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-			this.right_leg_1.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-			this.left_leg_2.xRot = MathHelper.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
-			this.right_leg_2.xRot = MathHelper.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-			this.tail.yRot = MathHelper.cos(limbSwing * 0.6662F) * 0.5F * limbSwingAmount;
-		}
-
-	@Override
-	protected Iterable<ModelRenderer> headParts() {
-		return Collections.emptyList();
+		return LayerDefinition.create(meshdefinition, 128, 128);
 	}
 
 	@Override
-	protected Iterable<ModelRenderer> bodyParts() {
-		return ImmutableList.of(glyptodon);
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+		this.head.xRot = headPitch * ((float)Math.PI / 180F);
+		this.head.yRot = netHeadYaw * ((float)Math.PI / 180F);
+		this.left_leg_1.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.right_leg_1.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+		this.left_leg_2.xRot = Mth.cos(limbSwing * 0.6662F + (float)Math.PI) * 1.4F * limbSwingAmount;
+		this.right_leg_2.xRot = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
+		this.tail.zRot = Mth.cos(limbSwing * 0.6662F) * 0.5F * limbSwingAmount;
 	}
 
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-			modelRenderer.xRot = x;
-			modelRenderer.yRot = y;
-			modelRenderer.zRot = z;
-		}
+	@Override
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		creature.render(poseStack, buffer, packedLight, packedOverlay);
 	}
+}

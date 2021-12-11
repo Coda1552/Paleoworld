@@ -1,55 +1,57 @@
 package coda.paleoworld.common.entities;
 
 import coda.paleoworld.common.init.PWItems;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 
-public class RhamphorhynchusEntity extends TameableEntity {
+public class RhamphorhynchusEntity extends TamableAnimal {
 
-    public RhamphorhynchusEntity(EntityType<? extends TameableEntity> p_i48574_1_, World p_i48574_2_) {
+    public RhamphorhynchusEntity(EntityType<? extends TamableAnimal> p_i48574_1_, Level p_i48574_2_) {
         super(p_i48574_1_, p_i48574_2_);
         this.setTame(false);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.goalSelector.addGoal(2, new SitGoal(this));
+        this.goalSelector.addGoal(1, new FloatGoal(this));
+        this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.0D, true));
         this.goalSelector.addGoal(4, new FollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 8.0F));
-        this.goalSelector.addGoal(6, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new OwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this)).setAlertOthers());
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.FLYING_SPEED, 0.7D);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.3D).add(Attributes.MAX_HEALTH, 20.0D).add(Attributes.ATTACK_DAMAGE, 2.0D).add(Attributes.FLYING_SPEED, 0.7D);
     }
 
     @Override
     public void tick() {
         super.tick();
-        PlayerEntity player = (PlayerEntity) getVehicle();
+        Player player = (Player) getVehicle();
 
         if (player != null) {
             player.startFallFlying();
@@ -57,19 +59,19 @@ public class RhamphorhynchusEntity extends TameableEntity {
     }
 
     @Override
-    public ActionResultType mobInteract(PlayerEntity player, Hand hand) {
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
 
         if (!this.level.isClientSide) {
             if (this.isTame()) {
-                if (item.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
-                    if (!player.abilities.instabuild) {
+                if (itemstack.is(ItemTags.FISHES) && this.getHealth() < this.getMaxHealth()) {
+                    if (!player.isCreative()) {
                         itemstack.shrink(1);
                     }
 
                     this.heal((float) item.getFoodProperties().getNutrition());
-                    return ActionResultType.SUCCESS;
+                    return InteractionResult.SUCCESS;
                 }
 
                 if (isShiftKeyDown()) {
@@ -78,7 +80,7 @@ public class RhamphorhynchusEntity extends TameableEntity {
 
                 // TODO change tame item
             } else if (item == Items.COD) {
-                if (!player.abilities.instabuild) {
+                if (!player.isCreative()) {
                     itemstack.shrink(1);
                 }
 
@@ -92,7 +94,7 @@ public class RhamphorhynchusEntity extends TameableEntity {
                     this.level.broadcastEntityEvent(this, (byte) 6);
                 }
 
-                return ActionResultType.SUCCESS;
+                return InteractionResult.SUCCESS;
             }
         }
             return super.mobInteract(player, hand);
@@ -104,7 +106,7 @@ public class RhamphorhynchusEntity extends TameableEntity {
         } else {
             Entity entity = p_70097_1_.getEntity();
             this.setOrderedToSit(false);
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 p_70097_2_ = (p_70097_2_ + 1.0F) / 2.0F;
             }
 
@@ -126,12 +128,12 @@ public class RhamphorhynchusEntity extends TameableEntity {
 
     @Nullable
     @Override
-    public AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableMob getBreedOffspring(ServerLevel p_241840_1_, AgeableMob p_241840_2_) {
         return null;
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(PWItems.RHAMPHORHYNCHUS_SPAWN_EGG.get());
     }
 }

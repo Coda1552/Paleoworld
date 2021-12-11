@@ -1,21 +1,19 @@
 package coda.paleoworld.client;
 
 import coda.paleoworld.Paleoworld;
+import coda.paleoworld.client.model.*;
 import coda.paleoworld.client.renderer.*;
 import coda.paleoworld.client.renderer.layer.RhamphorhynchusLayerRenderer;
 import coda.paleoworld.common.init.PWBlocks;
 import coda.paleoworld.common.init.PWEntities;
-import coda.paleoworld.common.items.PWSpawnEggItem;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.color.IItemColor;
-import net.minecraft.client.renderer.color.ItemColors;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -24,32 +22,37 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void init(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.DAWN_HORSE.get(), DawnHorseRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.CEPHALASPIS.get(), CephalaspisRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.GLYPTODON.get(), GlyptodonRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.ASTRASPIS.get(), AstraspisRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.HAIKOUICHTHYS.get(), HaikouichthysRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.RHAMPHORHYNCHUS.get(), RhamphorhynchusRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.TRILOBITE.get(), TrilobiteRenderer::new);
-        RenderingRegistry.registerEntityRenderingHandler(PWEntities.RHAMPHORHYNCHUS.get(), RhamphorhynchusRenderer::new);
+        EntityRenderers.register(PWEntities.DAWN_HORSE.get(), DawnHorseRenderer::new);
+        EntityRenderers.register(PWEntities.CEPHALASPIS.get(), CephalaspisRenderer::new);
+        EntityRenderers.register(PWEntities.GLYPTODON.get(), GlyptodonRenderer::new);
+        EntityRenderers.register(PWEntities.ASTRASPIS.get(), AstraspisRenderer::new);
+        EntityRenderers.register(PWEntities.HAIKOUICHTHYS.get(), HaikouichthysRenderer::new);
+        EntityRenderers.register(PWEntities.TRILOBITE.get(), TrilobiteRenderer::new);
+        EntityRenderers.register(PWEntities.RHAMPHORHYNCHUS.get(), RhamphorhynchusRenderer::new);
+        EntityRenderers.register(PWEntities.ANOMALOCARIS.get(), AnomalocarisRenderer::new);
 
-        RenderTypeLookup.setRenderLayer(PWBlocks.CLOUDINA.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(PWBlocks.DEAD_CLOUDINA.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(PWBlocks.CLOUDINA_FAN.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(PWBlocks.DEAD_CLOUDINA_FAN.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(PWBlocks.CLOUDINA_WALL_FAN.get(), RenderType.cutout());
-        RenderTypeLookup.setRenderLayer(PWBlocks.DEAD_CLOUDINA_WALL_FAN.get(), RenderType.cutout());
+        ForgeHooksClient.registerLayerDefinition(AnomalocarisModel.LAYER, AnomalocarisModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(AstraspisModel.LAYER, AstraspisModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(CephalaspisModel.LAYER, CephalaspisModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(DawnHorseModel.LAYER, DawnHorseModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(HaikouichthysModel.LAYER, HaikouichthysModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(GlyptodonModel.LAYER, GlyptodonModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(RhamphorhynchusModel.LAYER, RhamphorhynchusModel::createBodyLayer);
+        ForgeHooksClient.registerLayerDefinition(TrilobiteModel.LAYER, TrilobiteModel::createBodyLayer);
 
-        PlayerRenderer managerDefault = Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().get("default");
-        PlayerRenderer managerSlim = Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().get("slim");
-        managerDefault.addLayer(new RhamphorhynchusLayerRenderer<>(managerDefault));
-        managerSlim.addLayer(new RhamphorhynchusLayerRenderer<>(managerSlim));
-    }
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.CLOUDINA.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.DEAD_CLOUDINA.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.CLOUDINA_FAN.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.DEAD_CLOUDINA_FAN.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.CLOUDINA_WALL_FAN.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(PWBlocks.DEAD_CLOUDINA_WALL_FAN.get(), RenderType.cutout());
 
-    @SubscribeEvent
-    public static void itemColors(ColorHandlerEvent.Item event) {
-         ItemColors handler = event.getItemColors();
-         IItemColor eggColor = (stack, tintIndex) -> ((PWSpawnEggItem) stack.getItem()).getColor(tintIndex);
-         for (PWSpawnEggItem e : PWSpawnEggItem.UNADDED_EGGS) handler.register(eggColor, e);
+        var managerDefault = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().get("default");
+        var managerSlim = (PlayerRenderer)Minecraft.getInstance().getEntityRenderDispatcher().getSkinMap().get("slim");
+
+        if (managerDefault != null && managerSlim != null) {
+            managerDefault.addLayer(new RhamphorhynchusLayerRenderer<>(managerDefault));
+            managerSlim.addLayer(new RhamphorhynchusLayerRenderer<>(managerSlim));
+        }
     }
 }

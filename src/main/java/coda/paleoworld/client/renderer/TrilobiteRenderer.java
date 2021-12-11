@@ -4,10 +4,10 @@ import coda.paleoworld.Paleoworld;
 import coda.paleoworld.client.model.TrilobiteModel;
 import coda.paleoworld.common.entities.TrilobiteEntity;
 import com.google.common.collect.Maps;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.Util;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Util;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -22,8 +22,8 @@ public class TrilobiteRenderer extends MobRenderer<TrilobiteEntity, TrilobiteMod
       hashMap.put(3, new ResourceLocation(Paleoworld.MOD_ID, "textures/entity/fish/long_tailed_trilobite.png"));
    });
 
-   public TrilobiteRenderer(EntityRendererManager renderManagerIn) {
-      super(renderManagerIn, new TrilobiteModel<>(), 0.3F);
+   public TrilobiteRenderer(EntityRendererProvider.Context manager) {
+      super(manager, new TrilobiteModel<>(manager.bakeLayer(TrilobiteModel.LAYER)), 0.3F);
    }
 
    public ResourceLocation getTextureLocation(TrilobiteEntity entity) {

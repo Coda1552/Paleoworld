@@ -1,12 +1,8 @@
 {
-  "surface_builder": "minecraft:ocean_sand",
-  "depth": -0.8,
-  "scale": 0.025,
   "temperature": 0.8,
   "downfall": 0.4,
   "precipitation": "rain",
   "category": "none",
-  "player_spawn_friendly": false,
   "effects": {
     "sky_color": 7907327,
     "fog_color": 12638463,
@@ -19,10 +15,6 @@
       "offset": 2
     }
   },
-  "starts": [
-    "minecraft:mineshaft",
-    "minecraft:shipwreck"
-  ],
   "spawners": {
     "monster": [],
     "creature": [
@@ -52,9 +44,7 @@
       }
     ],
     "ambient": [],
-    "water_creature": [
-
-    ],
+    "water_creature": [],
     "water_ambient": [],
     "misc": []
   },

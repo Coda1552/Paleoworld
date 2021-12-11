@@ -1,22 +1,22 @@
 package coda.paleoworld.common.entities;
 
 import coda.paleoworld.common.init.PWItems;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
 
-public class AstraspisEntity extends AbstractFishEntity {
+public class AstraspisEntity extends AbstractFish {
 
-    public AstraspisEntity(EntityType<? extends AbstractFishEntity> p_i48855_1_, World p_i48855_2_) {
+    public AstraspisEntity(EntityType<? extends AbstractFish> p_i48855_1_, Level p_i48855_2_) {
         super(p_i48855_1_, p_i48855_2_);
     }
 
     @Override
-    protected ItemStack getBucketItemStack() {
+    public ItemStack getBucketItemStack() {
         return new ItemStack(PWItems.ASTRRASPIS_BUCKET.get());
     }
 
@@ -26,7 +26,7 @@ public class AstraspisEntity extends AbstractFishEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult target) {
+    public ItemStack getPickedResult(HitResult target) {
         return new ItemStack(PWItems.ASTRRASPIS_SPAWN_EGG.get());
     }
 

@@ -1,136 +1,72 @@
-package coda.paleoworld.client.model;// Made with Blockbench 4.0.1
-// Exported for Minecraft version 1.15 - 1.16 with Mojang mappings
-// Paste this class into your mod and generate all required imports
+package coda.paleoworld.client.model;
 
+import coda.paleoworld.Paleoworld;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 
-import coda.paleoworld.common.entities.AnomalocarisEntity;
-import com.mojang.blaze3d.matrix.MatrixStack;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
-import net.minecraft.client.renderer.entity.model.EntityModel;
-import net.minecraft.client.renderer.model.ModelRenderer;
+public class AnomalocarisModel<T extends Entity> extends EntityModel<T> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(new ResourceLocation(Paleoworld.MOD_ID, "anomalocaris"), "main");
+	private final ModelPart anomalocaris;
 
-public class AnomalocarisModel extends EntityModel<AnomalocarisEntity> {
-	private final ModelRenderer anomalocaris;
-	private final ModelRenderer body;
-	private final ModelRenderer tail;
-	private final ModelRenderer cube_r1;
-	private final ModelRenderer head;
-	private final ModelRenderer right_eye;
-	private final ModelRenderer cube_r2;
-	private final ModelRenderer left_eye;
-	private final ModelRenderer cube_r3;
-	private final ModelRenderer right_whisker;
-	private final ModelRenderer cube_r4;
-	private final ModelRenderer left_whisker;
-	private final ModelRenderer cube_r5;
-	private final ModelRenderer right_fin;
-	private final ModelRenderer cube_r6;
-	private final ModelRenderer left_fin;
-	private final ModelRenderer cube_r7;
+	public AnomalocarisModel(ModelPart root) {
+		this.anomalocaris = root.getChild("anomalocaris");
+	}
 
-	public AnomalocarisModel() {
-		texWidth = 64;
-		texHeight = 64;
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition meshdefinition = new MeshDefinition();
+		PartDefinition partdefinition = meshdefinition.getRoot();
 
-		anomalocaris = new ModelRenderer(this);
-		anomalocaris.setPos(0.0F, 22.0F, 0.0F);
-		
+		PartDefinition anomalocaris = partdefinition.addOrReplaceChild("anomalocaris", CubeListBuilder.create(), PartPose.offset(0.0F, 22.0F, 0.0F));
 
-		body = new ModelRenderer(this);
-		body.setPos(0.0F, 0.0F, -4.0F);
-		anomalocaris.addChild(body);
-		body.texOffs(0, 0).addBox(-4.0F, -2.0F, 0.0F, 7.0F, 4.0F, 10.0F, 0.0F, false);
+		PartDefinition body = anomalocaris.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -2.0F, 0.0F, 7.0F, 4.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -4.0F));
 
-		tail = new ModelRenderer(this);
-		tail.setPos(0.0F, 0.0F, 6.0F);
-		anomalocaris.addChild(tail);
-		tail.texOffs(0, 34).addBox(-2.0F, 0.0F, 0.0F, 3.0F, 2.0F, 2.0F, 0.0F, false);
+		PartDefinition tail = anomalocaris.addOrReplaceChild("tail", CubeListBuilder.create().texOffs(0, 34).addBox(-2.0F, 0.0F, 0.0F, 3.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, 6.0F));
 
-		cube_r1 = new ModelRenderer(this);
-		cube_r1.setPos(0.0F, 1.0F, 2.0F);
-		tail.addChild(cube_r1);
-		setRotationAngle(cube_r1, -0.1309F, 0.0F, 0.0F);
-		cube_r1.texOffs(25, 0).addBox(-4.0F, 0.0F, -1.0F, 7.0F, 0.0F, 4.0F, 0.0F, false);
+		PartDefinition cube_r1 = tail.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(25, 0).addBox(-4.0F, 0.0F, -1.0F, 7.0F, 0.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 1.0F, 2.0F, -0.1309F, 0.0F, 0.0F));
 
-		head = new ModelRenderer(this);
-		head.setPos(0.0F, 0.0F, -4.0F);
-		anomalocaris.addChild(head);
-		head.texOffs(0, 25).addBox(-4.0F, -2.0F, -4.0F, 7.0F, 4.0F, 4.0F, 0.0F, false);
+		PartDefinition head = anomalocaris.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 25).addBox(-4.0F, -2.0F, -4.0F, 7.0F, 4.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 0.0F, -4.0F));
 
-		right_eye = new ModelRenderer(this);
-		right_eye.setPos(-4.0F, 0.0F, -2.0F);
-		head.addChild(right_eye);
+		PartDefinition right_eye = head.addOrReplaceChild("right_eye", CubeListBuilder.create(), PartPose.offset(-4.0F, 0.0F, -2.0F));
 
-		cube_r2 = new ModelRenderer(this);
-		cube_r2.setPos(0.0F, 0.0F, 0.0F);
-		right_eye.addChild(cube_r2);
-		setRotationAngle(cube_r2, 0.0F, 0.0F, -0.3054F);
-		cube_r2.texOffs(25, 5).addBox(-3.0F, 0.0F, -2.0F, 3.0F, 0.0F, 3.0F, 0.0F, false);
+		PartDefinition cube_r2 = right_eye.addOrReplaceChild("cube_r2", CubeListBuilder.create().texOffs(32, 12).addBox(-3.0F, 0.0F, -2.0F, 3.0F, 0.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.3054F));
 
-		left_eye = new ModelRenderer(this);
-		left_eye.setPos(3.0F, 0.0F, -2.0F);
-		head.addChild(left_eye);
+		PartDefinition left_eye = head.addOrReplaceChild("left_eye", CubeListBuilder.create(), PartPose.offset(3.0F, 0.0F, -2.0F));
 
-		cube_r3 = new ModelRenderer(this);
-		cube_r3.setPos(0.0F, 0.0F, 0.0F);
-		left_eye.addChild(cube_r3);
-		setRotationAngle(cube_r3, 0.0F, 0.0F, 0.2618F);
-		cube_r3.texOffs(32, 12).addBox(0.0F, 0.0F, -2.0F, 3.0F, 0.0F, 3.0F, 0.0F, false);
+		PartDefinition cube_r3 = left_eye.addOrReplaceChild("cube_r3", CubeListBuilder.create().texOffs(25, 5).addBox(0.0F, 0.0F, -2.0F, 3.0F, 0.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.2618F));
 
-		right_whisker = new ModelRenderer(this);
-		right_whisker.setPos(-2.0F, 1.0F, -4.0F);
-		head.addChild(right_whisker);
+		PartDefinition right_whisker = head.addOrReplaceChild("right_whisker", CubeListBuilder.create(), PartPose.offset(-2.0F, 1.0F, -4.0F));
 
-		cube_r4 = new ModelRenderer(this);
-		cube_r4.setPos(0.0F, 0.0F, 0.0F);
-		right_whisker.addChild(cube_r4);
-		setRotationAngle(cube_r4, 0.3054F, 0.0F, 0.0F);
-		cube_r4.texOffs(23, 26).addBox(-1.0F, 0.0F, -4.0F, 2.0F, 6.0F, 4.0F, 0.0F, false);
+		PartDefinition cube_r4 = right_whisker.addOrReplaceChild("cube_r4", CubeListBuilder.create().texOffs(32, 33).addBox(-1.0F, 0.0F, -4.0F, 2.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.3054F, 0.0F, 0.0F));
 
-		left_whisker = new ModelRenderer(this);
-		left_whisker.setPos(1.0F, 1.0F, -4.0F);
-		head.addChild(left_whisker);
+		PartDefinition left_whisker = head.addOrReplaceChild("left_whisker", CubeListBuilder.create(), PartPose.offset(1.0F, 1.0F, -4.0F));
 
-		cube_r5 = new ModelRenderer(this);
-		cube_r5.setPos(0.0F, 0.0F, 0.0F);
-		left_whisker.addChild(cube_r5);
-		setRotationAngle(cube_r5, 0.3054F, 0.0F, 0.0F);
-		cube_r5.texOffs(32, 33).addBox(-1.0F, 0.0F, -4.0F, 2.0F, 6.0F, 4.0F, 0.0F, false);
+		PartDefinition cube_r5 = left_whisker.addOrReplaceChild("cube_r5", CubeListBuilder.create().texOffs(23, 26).addBox(-1.0F, 0.0F, -4.0F, 2.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.3054F, 0.0F, 0.0F));
 
-		right_fin = new ModelRenderer(this);
-		right_fin.setPos(-4.0F, 0.0F, 0.0F);
-		anomalocaris.addChild(right_fin);
+		PartDefinition right_fin = anomalocaris.addOrReplaceChild("right_fin", CubeListBuilder.create(), PartPose.offset(-4.0F, 0.0F, 0.0F));
 
-		cube_r6 = new ModelRenderer(this);
-		cube_r6.setPos(0.0F, 0.0F, 0.0F);
-		right_fin.addChild(cube_r6);
-		setRotationAngle(cube_r6, 0.0F, 0.0F, -0.0873F);
-		cube_r6.texOffs(0, 15).addBox(-5.0F, 0.0F, -4.0F, 5.0F, 0.0F, 9.0F, 0.0F, false);
+		PartDefinition cube_r6 = right_fin.addOrReplaceChild("cube_r6", CubeListBuilder.create().texOffs(20, 16).addBox(-5.0F, 0.0F, -4.0F, 5.0F, 0.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, -0.0873F));
 
-		left_fin = new ModelRenderer(this);
-		left_fin.setPos(3.0F, 0.0F, 0.0F);
-		anomalocaris.addChild(left_fin);
+		PartDefinition left_fin = anomalocaris.addOrReplaceChild("left_fin", CubeListBuilder.create(), PartPose.offset(3.0F, 0.0F, 0.0F));
 
-		cube_r7 = new ModelRenderer(this);
-		cube_r7.setPos(0.0F, 0.0F, 0.0F);
-		left_fin.addChild(cube_r7);
-		setRotationAngle(cube_r7, 0.0F, 0.0F, 0.0873F);
-		cube_r7.texOffs(20, 16).addBox(0.0F, 0.0F, -4.0F, 5.0F, 0.0F, 9.0F, 0.0F, false);
+		PartDefinition cube_r7 = left_fin.addOrReplaceChild("cube_r7", CubeListBuilder.create().texOffs(0, 15).addBox(0.0F, 0.0F, -4.0F, 5.0F, 0.0F, 9.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 0.0F, 0.0F, 0.0873F));
+
+		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
 
 	@Override
-	public void setupAnim(AnomalocarisEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+	public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
 	}
 
 	@Override
-	public void renderToBuffer(MatrixStack matrixStack, IVertexBuilder buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha){
-		anomalocaris.render(matrixStack, buffer, packedLight, packedOverlay);
-	}
-
-	public void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.xRot = x;
-		modelRenderer.yRot = y;
-		modelRenderer.zRot = z;
+	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+		anomalocaris.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 }

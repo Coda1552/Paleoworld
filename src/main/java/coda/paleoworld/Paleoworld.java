@@ -1,16 +1,19 @@
 package coda.paleoworld;
 
-import coda.paleoworld.common.entities.*;
+import coda.paleoworld.common.entities.DawnHorseEntity;
+import coda.paleoworld.common.entities.GlyptodonEntity;
+import coda.paleoworld.common.entities.RhamphorhynchusEntity;
+import coda.paleoworld.common.entities.TrilobiteEntity;
 import coda.paleoworld.common.init.PWBlocks;
 import coda.paleoworld.common.init.PWEntities;
 import coda.paleoworld.common.init.PWItems;
 import coda.paleoworld.common.init.PWSounds;
-import net.minecraft.entity.EntitySpawnPlacementRegistry;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
-import net.minecraft.world.gen.Heightmap;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -40,22 +43,22 @@ public class Paleoworld {
     }
 
     private void registerCommon(FMLCommonSetupEvent event) {
-        EntitySpawnPlacementRegistry.register(PWEntities.GLYPTODON.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.DAWN_HORSE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AnimalEntity::checkAnimalSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.HAIKOUICHTHYS.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.ASTRASPIS.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.CEPHALASPIS.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
-        EntitySpawnPlacementRegistry.register(PWEntities.TRILOBITE.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkPrehistoricFishSpawnRules);
+        SpawnPlacements.register(PWEntities.GLYPTODON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(PWEntities.DAWN_HORSE.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
+        SpawnPlacements.register(PWEntities.HAIKOUICHTHYS.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
+        SpawnPlacements.register(PWEntities.ASTRASPIS.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
+        SpawnPlacements.register(PWEntities.CEPHALASPIS.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
+        SpawnPlacements.register(PWEntities.TRILOBITE.get(), SpawnPlacements.Type.NO_RESTRICTIONS, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, TrilobiteEntity::checkFishSpawnRules);
     }
 
     private void registerEntityAttributes(EntityAttributeCreationEvent event) {
         event.put(PWEntities.DAWN_HORSE.get(), DawnHorseEntity.createAttributes().build());
-        event.put(PWEntities.CEPHALASPIS.get(), AbstractFishEntity.createAttributes().build());
+        event.put(PWEntities.CEPHALASPIS.get(), AbstractFish.createAttributes().build());
         event.put(PWEntities.GLYPTODON.get(), GlyptodonEntity.createAttributes().build());
-        event.put(PWEntities.ASTRASPIS.get(), AstraspisEntity.createAttributes().build());
-        event.put(PWEntities.HAIKOUICHTHYS.get(), AbstractFishEntity.createAttributes().build());
+        event.put(PWEntities.ASTRASPIS.get(), AbstractFish.createAttributes().build());
+        event.put(PWEntities.HAIKOUICHTHYS.get(), AbstractFish.createAttributes().build());
         event.put(PWEntities.RHAMPHORHYNCHUS.get(), RhamphorhynchusEntity.createAttributes().build());
-        event.put(PWEntities.TRILOBITE.get(), AbstractFishEntity.createAttributes().build());
+        event.put(PWEntities.TRILOBITE.get(), AbstractFish.createAttributes().build());
     }
 
     private void registerClient(FMLClientSetupEvent event) {
@@ -63,7 +66,7 @@ public class Paleoworld {
         CALLBACKS.clear();
     }
 
-    public static final ItemGroup GROUP = new ItemGroup(Paleoworld.MOD_ID) {
+    public static final CreativeModeTab GROUP = new CreativeModeTab(Paleoworld.MOD_ID) {
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(PWItems.AMBER.get());
