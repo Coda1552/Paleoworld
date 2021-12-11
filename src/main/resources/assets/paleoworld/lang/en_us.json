@@ -20,6 +20,7 @@
   "item.paleoworld.haikouichthys_spawn_egg": "Haikouichthys Spawn Egg",
   "item.paleoworld.trilobite_spawn_egg": "Trilobite Spawn Egg",
   "item.paleoworld.rhamphorhynchus_spawn_egg": "Rhamphorhynchus Spawn Egg",
+  "item.paleoworld.anomalocaris_spawn_egg": "Anomalocaris Spawn Egg",
 
   "block.paleoworld.amber_block": "Block of Amber",
   "block.paleoworld.cloudina": "Cloudina",
@@ -34,6 +35,7 @@
   "entity.paleoworld.haikouichthys": "Haikouichthys",
   "entity.paleoworld.trilobite": "Trilobite",
   "entity.paleoworld.rhamphorhynchus": "Rhamphorhynchus",
+  "entity.paleoworld.anomalocaris": "Anomalocaris",
 
   "entity.paleoworld.trilobite.0": "Basic",
   "entity.paleoworld.trilobite.1": "Boomerang",

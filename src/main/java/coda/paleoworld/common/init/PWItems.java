@@ -43,6 +43,7 @@ public class PWItems {
     public static final RegistryObject<Item> HAIKOUICHTHYS_SPAWN_EGG = ITEMS.register("haikouichthys_spawn_egg", () -> new ForgeSpawnEggItem(PWEntities.HAIKOUICHTHYS, 0x63673f, 0x83836e, new Item.Properties().tab(Paleoworld.GROUP)));
     public static final RegistryObject<Item> TRILOBITE_SPAWN_EGG = ITEMS.register("trilobite_spawn_egg", () -> new ForgeSpawnEggItem(PWEntities.TRILOBITE, 0x6f623b, 0x83836e, new Item.Properties().tab(Paleoworld.GROUP)));
     public static final RegistryObject<Item> RHAMPHORHYNCHUS_SPAWN_EGG = ITEMS.register("rhamphorhynchus_spawn_egg", () -> new ForgeSpawnEggItem(PWEntities.RHAMPHORHYNCHUS, 0x2d3d4d, 0x4a2720, new Item.Properties().tab(Paleoworld.GROUP)));
+    public static final RegistryObject<Item> ANOMALOCARIS_SPAWN_EGG = ITEMS.register("anomalocaris_spawn_egg", () -> new ForgeSpawnEggItem(PWEntities.ANOMALOCARIS, 0x382e27, 0x743434, new Item.Properties().tab(Paleoworld.GROUP)));
 
     // Blocks
     public static final RegistryObject<Item> CLOUDINA_FAN = ITEMS.register("cloudina_fan", () -> new StandingAndWallBlockItem(PWBlocks.CLOUDINA_FAN.get(), PWBlocks.CLOUDINA_WALL_FAN.get(), (new Item.Properties()).tab(Paleoworld.GROUP)));
